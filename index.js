@@ -26,7 +26,7 @@ console.log (routes)
 
 /// get ///
 server.get (routes.root, (ri, ro) => {
-  console.log (`>>> ${routes.root} .get <<<`)
+  console.log (`>>> ${routes.root} .GET <<<`)
   ro
     .status (200)
     .json ({
@@ -40,7 +40,7 @@ server.get (routes.root, (ri, ro) => {
 
 /// get ///
 server.get (routes.api.root, (ri, ro) => {
-  console.log (`>>> ${routes.api.root} .get <<<`)
+  console.log (`>>> ${routes.api.root} .GET <<<`)
   ro
     .status (200)
     .json ({
@@ -52,7 +52,26 @@ server.get (routes.api.root, (ri, ro) => {
   .api.users.all
 *******************/
 
-
+/// get ///
+server.get (routes.api.users.all (), (ri, ro) => {
+  console.log (`>>> ${routes.api.users.all ()} .GET <<<`)
+  db.users
+    .find () // returns a promise
+    .then ((users) => {
+      console.log (`>>> ${routes.api.users.all ()} .GET .find .then <<<`)
+      ro
+        .status (200)
+        .json (users)
+    })
+    .catch ((error) => {
+      console.log (`>>> ${routes.api.users.all ()} .GET .find .catch <<<`)
+      ro
+        .status (500)
+        .json ({
+          error : error,
+        })
+    })
+})
 
 /*******************
   .api.users.one
