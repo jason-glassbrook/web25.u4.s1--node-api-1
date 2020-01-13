@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "knex": "^0.20.7",
+    "lodash": "^4.17.15",
     "sqlite3": "^4.1.1"
   }
 }
