@@ -28,6 +28,7 @@ console.log (routes)
 server.get (routes.root, (ri, ro) => {
   console.log (`>>> ${routes.root} .get <<<`)
   ro
+    .status (200)
     .json ({
       message : 'hello world',
     })
@@ -41,6 +42,7 @@ server.get (routes.root, (ri, ro) => {
 server.get (routes.api.root, (ri, ro) => {
   console.log (`>>> ${routes.api.root} .get <<<`)
   ro
+    .status (200)
     .json ({
       message : 'hello world',
     })
@@ -49,6 +51,8 @@ server.get (routes.api.root, (ri, ro) => {
 /*******************
   .api.users.all
 *******************/
+
+
 
 /*******************
   .api.users.one
