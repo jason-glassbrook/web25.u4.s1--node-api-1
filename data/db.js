@@ -1,8 +1,8 @@
+/// imports ///
 const _ = require ('lodash')
 const knex = require ('knex')
-const knexConfig = require ('../knexfile.js')
-const db = knex (knexConfig.development)
 
+/// exports ///
 module.exports = {
   find,
   findById,
@@ -10,6 +10,14 @@ module.exports = {
   update,
   remove,
 }
+
+/// setup ///
+const knexConfig = require ('../knexfile.js')
+const db = knex (knexConfig.development)
+
+/***************************************
+  handlers
+***************************************/
 
 function find (id = undefined) {
   if (_.isNil (id)) {
