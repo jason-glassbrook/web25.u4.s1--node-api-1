@@ -1,4 +1,4 @@
-/// external modules ///
+/// tools ///
 const _ = require ('lodash/fp')
 const express = require ('express')
 
@@ -12,3 +12,6 @@ const port = 5555
 const server = express ()
 server.use (express.json ())
 
+/// routes ///
+const { routes } = require ('./routes')
+console.log (routes)
