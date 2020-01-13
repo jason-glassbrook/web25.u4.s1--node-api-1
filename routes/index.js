@@ -33,7 +33,7 @@ module.exports = {
     api : {
       base : api.path (),
       root : api.path () + '/',
-      all_users : {
+      users : {
         base : api_users.path (),
         root : api_users.path () + '/',
         all : api_users_all.path,
