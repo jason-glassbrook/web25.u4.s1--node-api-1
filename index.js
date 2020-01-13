@@ -24,9 +24,27 @@ console.log (routes)
   .root
 *******************/
 
+/// get ///
+server.get (routes.root, (ri, ro) => {
+  console.log (`>>> ${routes.root} .get <<<`)
+  ro
+    .json ({
+      message : 'hello world',
+    })
+})
+
 /*******************
   .api.root
 *******************/
+
+/// get ///
+server.get (routes.api.root, (ri, ro) => {
+  console.log (`>>> ${routes.api.root} .get <<<`)
+  ro
+    .json ({
+      message : 'hello world',
+    })
+})
 
 /*******************
   .api.users.all
