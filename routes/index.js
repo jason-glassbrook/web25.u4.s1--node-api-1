@@ -28,11 +28,14 @@ const api_users_one = new Route (
 /// exports ///
 module.exports = {
   routes : {
-    _base_ : server.path (),
+    base : server.path (),
+    root : server.path () + '/',
     api : {
-      _base_ : api.path (),
+      base : api.path (),
+      root : api.path () + '/',
       all_users : {
-        _base_ : api_users.path (),
+        base : api_users.path (),
+        root : api_users.path () + '/',
         all : api_users_all.path,
         one : api_users_one.path,
       }
