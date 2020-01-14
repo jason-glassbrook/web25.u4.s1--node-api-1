@@ -171,6 +171,44 @@ server.get (routes.api.users.one (), (ri, ro) => {
     })
 })
 
+/// delete ///
+server.delete (routes.api.users.one (), (ri, ro) => {
+  console.log (`>>> ${routes.api.users.one ()} .DELETE <<<`)
+
+  const userId = ri.params.id
+  console.log (userId)
+
+  db.users
+    .remove (userId)
+    .then ((status) => {
+      console.log (`>>> ${routes.api.users.one ()} .DELETE .remove .then <<<`)
+      // console.log (status)
+      if (status === 0) {
+        ro
+          .status (404)
+          .json ({
+            error : `could not delete user by id : ${userId}`,
+          })
+      }
+      else {
+        ro
+          .status (200)
+          .json ({
+            'message' : `deleted user by id : ${userId}`
+          })
+      }
+    })
+    .catch ((error) => {
+      console.log (`>>> ${routes.api.users.one ()} .DELETE .remove .catch <<<`)
+      // console.log (error)
+      ro
+        .status (500)
+        .json ({
+          error : error,
+        })
+    })
+})
+
 /***************************************
   run server
 ***************************************/
