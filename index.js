@@ -77,12 +77,14 @@ server.get (routes.api.users.all (), (ri, ro) => {
     .find ()
     .then ((users) => {
       console.log (`>>> ${routes.api.users.all ()} .GET .find .then <<<`)
+      // console.log (users)
       ro
         .status (200)
         .json (users)
     })
     .catch ((error) => {
       console.log (`>>> ${routes.api.users.all ()} .GET .find .catch <<<`)
+      // console.log (error)
       ro
         .status (500)
         .json ({
@@ -104,12 +106,14 @@ server.post (routes.api.users.all (), (ri, ro) => {
       .insert (user)
       .then ((users) => {
         console.log (`>>> ${routes.api.users.all ()} .POST .insert .then <<<`)
+        // console.log (users)
         ro
           .status (201)
           .json (users)
       })
       .catch ((error) => {
         console.log (`>>> ${routes.api.users.all ()} .POST .insert .catch <<<`)
+        // console.log (error)
         ro
           .status (500)
           .json ({
