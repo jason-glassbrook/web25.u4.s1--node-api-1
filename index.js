@@ -121,6 +121,7 @@ server.post (routes.api.users.all (), (ri, ro) => {
   console.log (`>>> ${routes.api.users.all ()} .POST <<<`)
 
   const user = trimData ('user') (ri.body)
+  console.log (ri.body)
   console.log (user)
 
   if (isValid ('user') (user)) {
@@ -201,6 +202,7 @@ server.put (routes.api.users.one (), (ri, ro) => {
   const { id } = ri.params
   console.log (id)
   const user = trimData ('user') (ri.body)
+  console.log (ri.body)
   console.log (user)
 
   if (isValidPartial ('user') (user)) {
