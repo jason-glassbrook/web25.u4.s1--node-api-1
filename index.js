@@ -139,11 +139,11 @@ server.post (routes.api.users.all (), (ri, ro) => {
 server.get (routes.api.users.one (), (ri, ro) => {
   console.log (`>>> ${routes.api.users.one ()} .GET <<<`)
 
-  const userId = ri.params.id
-  console.log (userId)
+  const { id } = ri.params
+  console.log (id)
 
   db.users
-    .find (userId)
+    .find (id)
     .then ((user) => {
       console.log (`>>> ${routes.api.users.one ()} .GET .find .then <<<`)
       // console.log (user)
@@ -151,7 +151,7 @@ server.get (routes.api.users.one (), (ri, ro) => {
         ro
           .status (404)
           .json ({
-            error : `could not find user by id : ${userId}`,
+            error : `could not find user by id : ${id}`,
           })
       }
       else {
@@ -171,15 +171,53 @@ server.get (routes.api.users.one (), (ri, ro) => {
     })
 })
 
+/// put ///
+server.put (routes.api.users.one (), (ri, ro) => {
+  console.log (`>>> ${routes.api.users.one ()} .PUT <<<`)
+
+  const { id } = ri.params
+  console.log (id)
+  const user = ri.body
+  console.log (user)
+
+  db.users
+    .update (id, user)
+    .then (([ status, user ]) => {
+      console.log (`>>> ${routes.api.users.one ()} .PUT .update .then <<<`)
+      // console.log (user)
+      if (status === 0) {
+        ro
+          .status (404)
+          .json ({
+            error : `could not find user by id : ${id}`,
+          })
+      }
+      else {
+        ro
+          .status (200)
+          .json (user)
+      }
+    })
+    .catch ((error) => {
+      console.log (`>>> ${routes.api.users.one ()} .PUT .update .catch <<<`)
+      // console.log (error)
+      ro
+        .status (500)
+        .json ({
+          error : error,
+        })
+    })
+})
+
 /// delete ///
 server.delete (routes.api.users.one (), (ri, ro) => {
   console.log (`>>> ${routes.api.users.one ()} .DELETE <<<`)
 
-  const userId = ri.params.id
-  console.log (userId)
+  const { id } = ri.params
+  console.log (id)
 
   db.users
-    .remove (userId)
+    .remove (id)
     .then (([ status, user ]) => {
       console.log (`>>> ${routes.api.users.one ()} .DELETE .remove .then <<<`)
       // console.log (status)
@@ -187,14 +225,14 @@ server.delete (routes.api.users.one (), (ri, ro) => {
         ro
           .status (404)
           .json ({
-            error : `could not delete user by id : ${userId}`,
+            error : `could not delete user by id : ${id}`,
           })
       }
       else {
         ro
           .status (200)
           .json ({
-            message : `deleted user by id : ${userId}`,
+            message : `deleted user by id : ${id}`,
             user,
           })
       }
