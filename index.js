@@ -52,7 +52,7 @@ const hasValidPartial = (dataName, path) =>
   _.conforms (orNil (_.pick ([ path ])) (shapeOf[dataName]))
 
 const testsOfPartial = (dataName) =>
-_.map ((key) => hasValidPartial (dataName, key)) (_.keys (shapeOf[dataName]))
+  _.map ((key) => hasValidPartial (dataName, key)) (_.keys (shapeOf[dataName]))
 
 const isValidPartial = (dataName) =>
   _.overEvery (testsOfPartial (dataName))
