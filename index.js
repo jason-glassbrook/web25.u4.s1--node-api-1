@@ -180,7 +180,7 @@ server.delete (routes.api.users.one (), (ri, ro) => {
 
   db.users
     .remove (userId)
-    .then ((status) => {
+    .then (([ status, user ]) => {
       console.log (`>>> ${routes.api.users.one ()} .DELETE .remove .then <<<`)
       // console.log (status)
       if (status === 0) {
@@ -194,7 +194,8 @@ server.delete (routes.api.users.one (), (ri, ro) => {
         ro
           .status (200)
           .json ({
-            'message' : `deleted user by id : ${userId}`
+            message : `deleted user by id : ${userId}`,
+            user,
           })
       }
     })

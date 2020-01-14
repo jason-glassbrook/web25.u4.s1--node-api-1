@@ -20,7 +20,7 @@ const db = knex (knexConfig.development)
 ***************************************/
 
 async function find (id = undefined) {
-  const re = (_.isNil (id)) ? await db ('users') : findById (id)
+  const re = (_.isNil (id)) ? await db ('users') : await findById (id)
   return re
 }
 
@@ -38,7 +38,7 @@ async function insert (user) {
     await db ('users')
       .insert (user)
   )
-  return findById (id)
+  return await findById (id)
 }
 
 async function update (id, user) {
@@ -51,9 +51,11 @@ async function update (id, user) {
 }
 
 async function remove (id) {
-  return (
-    db ('users')
+  const re = await findById (id)
+  const status = (
+    await db ('users')
       .where ('id', Number (id))
       .delete ()
   )
+  return [ status, re ]
 }
