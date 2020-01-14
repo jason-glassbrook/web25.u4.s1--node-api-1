@@ -32,6 +32,9 @@ const orNil = _.flow ([
   _.overSome
 ])
 
+const trimData = (dataName) =>
+  _.pick (_.keys (shapeOf[dataName]))
+
 /// full data ///
 
 const hasValid = (dataName, path) =>
@@ -117,7 +120,7 @@ server.get (routes.api.users.all (), (ri, ro) => {
 server.post (routes.api.users.all (), (ri, ro) => {
   console.log (`>>> ${routes.api.users.all ()} .POST <<<`)
 
-  const user = ri.body
+  const user = trimData ('user') (ri.body)
   console.log (user)
 
   if (isValid ('user') (user)) {
@@ -197,12 +200,9 @@ server.put (routes.api.users.one (), (ri, ro) => {
 
   const { id } = ri.params
   console.log (id)
-  const user = ri.body
+  const user = trimData ('user') (ri.body)
   console.log (user)
 
-  db.users
-    .update (id, user)
-    .then (([ status, user ]) => {
   if (isValidPartial ('user') (user)) {
     db.users
       .update (id, user)
@@ -240,6 +240,9 @@ server.put (routes.api.users.one (), (ri, ro) => {
         error : 'user must conform to a partial of { bio : string, name : string }'
       })
   }
+})
+
+/// delete ///
 server.delete (routes.api.users.one (), (ri, ro) => {
   console.log (`>>> ${routes.api.users.one ()} .DELETE <<<`)
 
