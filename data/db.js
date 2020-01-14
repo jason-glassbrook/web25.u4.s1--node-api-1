@@ -19,47 +19,42 @@ const db = knex (knexConfig.development)
   handlers
 ***************************************/
 
-function find (id = undefined) {
-  if (_.isNil (id)) {
-    return (
-      db ('users')
-    )
-  }
-  else {
-    return (
-      findById (id)
-    )
-  }
+async function find (id = undefined) {
+  const re = (_.isNil (id)) ? await db ('users') : findById (id)
+  return re
 }
 
-function findById (id) {
-  return (
-    db ('users')
+async function findById (id) {
+  const re = (
+    await db ('users')
       .where ({ id: Number (id) })
       .first ()
   )
+  return re
 }
 
-function insert (user) {
-  return (
-    db ('users')
+async function insert (user) {
+  const re = (
+    await db ('users')
       .insert (user)
       .then (ids => ({ id: ids[0] }))
   )
+  return re
 }
 
-function update (id, user) {
-  return (
-    db ('users')
+async function update (id, user) {
+  const re = (
+    await db ('users')
       .where ('id', Number (id))
       .update (user)
   )
+  return re
 }
 
-function remove (id) {
+async function remove (id) {
   return (
     db ('users')
       .where ('id', Number (id))
-      .del ()
+      .delete ()
   )
 }
