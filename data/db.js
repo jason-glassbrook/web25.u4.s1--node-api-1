@@ -42,12 +42,13 @@ async function insert (user) {
 }
 
 async function update (id, user) {
-  const re = (
+  const status = (
     await db ('users')
       .where ('id', Number (id))
       .update (user)
   )
-  return re
+  const re = await findById (id)
+  return [ status, re ]
 }
 
 async function remove (id) {
