@@ -21,13 +21,13 @@ console.log (routes)
 ***************************************/
 
 const hasValidUserBio =
-  _.conforms ({ bio : _.isString })
+  _.conforms ({ 'bio' : _.isString })
 
 const hasValidUserName =
-  _.conforms ({ name : _.isString })
+  _.conforms ({ 'name' : _.isString })
 
 const isValidUser =
-  _.every ([ hasValidUserBio, hasValidUserName ])
+  _.overEvery ([ hasValidUserBio, hasValidUserName ])
 
 /***************************************
   define requests
@@ -69,7 +69,7 @@ server.get (routes.api.root, (ri, ro) => {
 server.get (routes.api.users.all (), (ri, ro) => {
   console.log (`>>> ${routes.api.users.all ()} .GET <<<`)
   db.users
-    .find () // returns a promise
+    .find ()
     .then ((users) => {
       console.log (`>>> ${routes.api.users.all ()} .GET .find .then <<<`)
       ro
@@ -84,6 +84,42 @@ server.get (routes.api.users.all (), (ri, ro) => {
           error : error,
         })
     })
+})
+
+/// post ///
+server.post (routes.api.users.all (), (ri, ro) => {
+  console.log (`>>> ${routes.api.users.all ()} .POST <<<`)
+
+  const user = ri.body
+  console.log (user)
+
+  if (isValidUser (user)) {
+    console.log (`>>> ${routes.api.users.all ()} .POST .insert <<<`)
+    db.users
+      .insert (user)
+      .then ((users) => {
+        console.log (`>>> ${routes.api.users.all ()} .POST .insert .then <<<`)
+        ro
+          .status (201)
+          .json (users)
+      })
+      .catch ((error) => {
+        console.log (`>>> ${routes.api.users.all ()} .POST .insert .catch <<<`)
+        ro
+          .status (500)
+          .json ({
+            error : error,
+          })
+      })
+  }
+  else {
+    console.log (`>>> ${routes.api.users.all ()} .POST no-valid-user <<<`)
+    ro
+      .status (400)
+      .json ({
+        error : 'user must conform to { bio : string, name : string }'
+      })
+  }
 })
 
 /*******************
