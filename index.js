@@ -135,6 +135,42 @@ server.post (routes.api.users.all (), (ri, ro) => {
   .api.users.one
 *******************/
 
+/// get ///
+server.get (routes.api.users.one (), (ri, ro) => {
+  console.log (`>>> ${routes.api.users.one ()} .GET <<<`)
+
+  const userId = ri.params.id
+  console.log (userId)
+
+  db.users
+    .find (userId)
+    .then ((user) => {
+      console.log (`>>> ${routes.api.users.one ()} .GET .find .then <<<`)
+      // console.log (user)
+      if (_.isNil (user)) {
+        ro
+          .status (404)
+          .json ({
+            error : `could not find user by id : ${userId}`,
+          })
+      }
+      else {
+        ro
+          .status (200)
+          .json (user)
+      }
+    })
+    .catch ((error) => {
+      console.log (`>>> ${routes.api.users.one ()} .GET .find .catch <<<`)
+      // console.log (error)
+      ro
+        .status (500)
+        .json ({
+          error : error,
+        })
+    })
+})
+
 /***************************************
   run server
 ***************************************/
