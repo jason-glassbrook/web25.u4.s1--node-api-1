@@ -20,19 +20,39 @@ console.log (routes)
   validate data
 ***************************************/
 
-const hasValidUserBio =
-  _.conforms ({ 'bio' : _.isString })
+const shapeOf = {
+  user : {
+    'name' : _.isString,
+    'bio' : _.isString,
+  },
+}
 
-const hasValidUserName =
-  _.conforms ({ 'name' : _.isString })
+const orNil = _.flow ([
+  _.concat (_.isNil),
+  _.overSome
+])
 
-const testsForValidUser = [
-  hasValidUserBio,
-  hasValidUserName,
-]
+/// full data ///
 
-const isValidUser =
-  _.overEvery (testsForValidUser)
+const hasValid = (dataName, path) =>
+  _.conforms (_.pick ([ path ]) (shapeOf[dataName]))
+
+const testsOf = (dataName) =>
+  _.map ((key) => hasValid (dataName, key)) (_.keys (shapeOf[dataName]))
+
+const isValid = (dataName) =>
+  _.overEvery (testsOf (dataName))
+
+/// partial data ///
+
+const hasValidPartial = (dataName, path) =>
+  _.conforms (orNil (_.pick ([ path ])) (shapeOf[dataName]))
+
+const testsOfPartial = (dataName) =>
+_.map ((key) => hasValidPartial (dataName, key)) (_.keys (shapeOf[dataName]))
+
+const isValidPartial = (dataName) =>
+  _.overEvery (testsOfPartial (dataName))
 
 /***************************************
   define requests
@@ -100,7 +120,7 @@ server.post (routes.api.users.all (), (ri, ro) => {
   const user = ri.body
   console.log (user)
 
-  if (isValidUser (user)) {
+  if (isValid ('user') (user)) {
     console.log (`>>> ${routes.api.users.all ()} .POST .insert <<<`)
     db.users
       .insert (user)
