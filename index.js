@@ -26,8 +26,13 @@ const hasValidUserBio =
 const hasValidUserName =
   _.conforms ({ 'name' : _.isString })
 
+const testsForValidUser = [
+  hasValidUserBio,
+  hasValidUserName,
+]
+
 const isValidUser =
-  _.overEvery ([ hasValidUserBio, hasValidUserName ])
+  _.overEvery (testsForValidUser)
 
 /***************************************
   define requests
