@@ -39,12 +39,12 @@ const isValidUser =
 ***************************************/
 
 /*******************
-  .root
+  ._base
 *******************/
 
 /// get ///
-server.get (routes.root, (ri, ro) => {
-  console.log (`>>> ${routes.root} .GET <<<`)
+server.get (routes._base, (ri, ro) => {
+  console.log (`>>> ${routes._base} .GET <<<`)
   ro
     .status (200)
     .json ({
@@ -53,12 +53,12 @@ server.get (routes.root, (ri, ro) => {
 })
 
 /*******************
-  .api.root
+  .api._base
 *******************/
 
 /// get ///
-server.get (routes.api.root, (ri, ro) => {
-  console.log (`>>> ${routes.api.root} .GET <<<`)
+server.get (routes.api._base, (ri, ro) => {
+  console.log (`>>> ${routes.api._base} .GET <<<`)
   ro
     .status (200)
     .json ({
