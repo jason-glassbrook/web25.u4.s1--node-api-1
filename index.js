@@ -203,33 +203,43 @@ server.put (routes.api.users.one (), (ri, ro) => {
   db.users
     .update (id, user)
     .then (([ status, user ]) => {
-      console.log (`>>> ${routes.api.users.one ()} .PUT .update .then <<<`)
-      // console.log (user)
-      if (status === 0) {
+  if (isValidPartial ('user') (user)) {
+    db.users
+      .update (id, user)
+      .then (([ status, user ]) => {
+        console.log (`>>> ${routes.api.users.one ()} .PUT .update .then <<<`)
+        // console.log (user)
+        if (status === 0) {
+          ro
+            .status (404)
+            .json ({
+              error : `could not find user by id : ${id}`,
+            })
+        }
+        else {
+          ro
+            .status (200)
+            .json (user)
+        }
+      })
+      .catch ((error) => {
+        console.log (`>>> ${routes.api.users.one ()} .PUT .update .catch <<<`)
+        // console.log (error)
         ro
-          .status (404)
+          .status (500)
           .json ({
-            error : `could not find user by id : ${id}`,
+            error : error,
           })
-      }
-      else {
-        ro
-          .status (200)
-          .json (user)
-      }
-    })
-    .catch ((error) => {
-      console.log (`>>> ${routes.api.users.one ()} .PUT .update .catch <<<`)
-      // console.log (error)
-      ro
-        .status (500)
-        .json ({
-          error : error,
-        })
-    })
-})
-
-/// delete ///
+      })
+  }
+  else {
+    console.log (`>>> ${routes.api.users.all ()} .PUT no-valid-partial-user <<<`)
+    ro
+      .status (400)
+      .json ({
+        error : 'user must conform to a partial of { bio : string, name : string }'
+      })
+  }
 server.delete (routes.api.users.one (), (ri, ro) => {
   console.log (`>>> ${routes.api.users.one ()} .DELETE <<<`)
 
