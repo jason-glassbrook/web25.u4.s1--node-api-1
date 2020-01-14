@@ -17,6 +17,19 @@ const { routes } = require ('./routes')
 console.log (routes)
 
 /***************************************
+  validate data
+***************************************/
+
+const hasValidUserBio =
+  _.conforms ({ bio : _.isString })
+
+const hasValidUserName =
+  _.conforms ({ name : _.isString })
+
+const isValidUser =
+  _.every ([ hasValidUserBio, hasValidUserName ])
+
+/***************************************
   define requests
 ***************************************/
 
