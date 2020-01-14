@@ -34,12 +34,11 @@ async function findById (id) {
 }
 
 async function insert (user) {
-  const re = (
+  const [ id ] = (
     await db ('users')
       .insert (user)
-      .then (ids => ({ id: ids[0] }))
   )
-  return re
+  return findById (id)
 }
 
 async function update (id, user) {
