@@ -1,39 +1,62 @@
-const knex = require('knex');
-const knexConfig = require('../knexfile.js');
-const db = knex(knexConfig.development);
+/// imports ///
+const _ = require ('lodash/fp')
+const knex = require ('knex')
 
+/// exports ///
 module.exports = {
   find,
   findById,
   insert,
   update,
   remove,
-};
-
-function find() {
-  return db('users');
 }
 
-function findById(id) {
-  return db('users')
-    .where({ id: Number(id) })
-    .first();
+/// setup ///
+const knexConfig = require ('../knexfile.js')
+const db = knex (knexConfig.development)
+
+/***************************************
+  handlers
+***************************************/
+
+async function find (id = undefined) {
+  const re = (_.isNil (id)) ? await db ('users') : await findById (id)
+  return re
 }
 
-function insert(user) {
-  return db('users')
-    .insert(user)
-    .then(ids => ({ id: ids[0] }));
+async function findById (id) {
+  const re = (
+    await db ('users')
+      .where ({ id: Number (id) })
+      .first ()
+  )
+  return re
 }
 
-function update(id, user) {
-  return db('users')
-    .where('id', Number(id))
-    .update(user);
+async function insert (user) {
+  const [ id ] = (
+    await db ('users')
+      .insert (user)
+  )
+  return await findById (id)
 }
 
-function remove(id) {
-  return db('users')
-    .where('id', Number(id))
-    .del();
+async function update (id, user) {
+  const status = (
+    await db ('users')
+      .where ('id', Number (id))
+      .update (user)
+  )
+  const re = await findById (id)
+  return [ status, re ]
+}
+
+async function remove (id) {
+  const re = await findById (id)
+  const status = (
+    await db ('users')
+      .where ('id', Number (id))
+      .delete ()
+  )
+  return [ status, re ]
 }
